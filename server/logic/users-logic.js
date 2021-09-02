@@ -14,15 +14,11 @@ async function addUser(registrationData) {
     await usersDao.addUser(registrationData);
 }
 
-async function getUser(userData) {
-    await usersDao.getUser(userData);
-}
-
 async function login(user) {
     try{
         user.password = crypto.createHash("md5").update(saltLeft + user.password + saltRight).digest("hex");
         let userDetails = await usersDao.login(user);
-        const token = jwt.sign({ firstName: user.userName , userType: userDetails.userType, id: userDetails.id}, config.secret,{
+        const token = jwt.sign({ firstName: userDetails.firstName , userType: userDetails.userType, id: userDetails.id}, config.secret,{
             expiresIn: "7d"
         });        
         return { token, userType: userDetails.userType, firstName: userDetails.firstName };
@@ -31,7 +27,6 @@ async function login(user) {
     }
 }
 
-
 async function validateUserDetailsRegister(registrationData) {
     if (await usersDao.isUserExistByName(registrationData.userName)) {
         throw new ServerError(ErrorType.USER_NAME_ALREADY_EXIST);
@@ -39,5 +34,4 @@ async function validateUserDetailsRegister(registrationData) {
 }
 
 
-
-module.exports = { addUser, login, getUser }
+module.exports = { addUser, login}

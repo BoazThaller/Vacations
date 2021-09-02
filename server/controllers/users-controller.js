@@ -9,11 +9,8 @@ const config = require('../config.json');
 
 
 router.post("/login", async (request, response, next) => {
-    // Extracting the JSON from the packet's BODY
-
     let user = request.body;
     try {
-        // let successfullLoginData = await usersLogic.login(user);
         let userData = await usersLogic.login(user);
         response.json(userData);
     }
@@ -43,5 +40,15 @@ router.post("/", async (request, response, next) => {
     }
 });
 
+router.get("/", async (request, response, next) => {
+    try {
+        await usersLogic.getAllUsers().then(function (data) {
+        response.send(JSON.stringify(data))
+    })
+    }
+    catch (error) {
+        return next(error);
+    }
+});
 
 module.exports = router;

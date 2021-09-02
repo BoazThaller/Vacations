@@ -1,19 +1,17 @@
 let connection = require("./connection-wrapper")
 
 async function addUser(registrationData) {
-    let sql = `INSERT INTO users (first_name, last_name, password, user_name, user_type)
-    VALUES (?,?,?,?,?)`;
+    let sql = `INSERT INTO users (first_name, last_name, password, user_name, user_type, id, city, street)
+    VALUES (?,?,?,?,?,?,?,?)`;
 
     let userType = "USER"
-    let parameters = [registrationData.firstName, registrationData.lastName, registrationData.password, registrationData.userName, userType];
+    let parameters = [registrationData.firstName, registrationData.lastName, registrationData.password, registrationData.userName, userType, registrationData.personalId, registrationData.city, registrationData.street];
 
     await connection.executeWithParameters(sql, parameters);
 }
 
 async function login(user) {
-
-
-    let sql = `SELECT id, first_name as "firstName", user_type as "userType" FROM Users WHERE user_name=? and password =?`
+    let sql = `SELECT id, first_name as "firstName", user_type as "userType" FROM users WHERE user_name=? and password =?`
     let parameters = [user.userName, user.password];
     let usersLoginResult;
     usersLoginResult = await connection.executeWithParameters(sql, parameters);
