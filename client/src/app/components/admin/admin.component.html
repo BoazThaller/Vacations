@@ -1,0 +1,11 @@
+<app-nav-bar></app-nav-bar>
+<button>add product</button>
+<div class="productsContainer">
+  <div class="product" *ngFor="let product of products">
+    <div>
+      <button (click)="onEditClicked(product)">Edit</button>
+    </div>
+    <h1>name: {{ product.name }}</h1>
+    <h1>Price: {{ product.price }}</h1>
+  </div>
+</div>
